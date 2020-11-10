@@ -20,7 +20,7 @@ public class AccountHistory {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < count; i++) {
-            sb.append(history[i].toString()).append("\n\t");
+            sb.append(history[i].toString()).append("\n");
         }
         return sb.toString();
     }
