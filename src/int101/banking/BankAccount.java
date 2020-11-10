@@ -19,7 +19,7 @@ public class BankAccount {
         this.balance = new BigDecimal(0);
         this.history.append(new AccountTransaction(TransactionType.OPEN, this.balance));
     }
-
+    
     /* ToDo: 
        - call the above constructor to the the job.
        - use "firstname lastname" of accountOwner as the accountName;
@@ -28,12 +28,14 @@ public class BankAccount {
         this(accountOwner.getFirstname() + 
                 " " + accountOwner.getLastname(), accountOwner);
     }
+
+    public int getAccountNo() { return accountNo; }
     
     public BankAccount deposit(double amount) {
         return deposit(amount, true);
     }
     
-    public BankAccount deposit(double amount, boolean log) {
+    private BankAccount deposit(double amount, boolean log) {
         if (amount<=0) return null;
         BigDecimal d = new BigDecimal(amount);
         balance = balance.add(d);
@@ -45,7 +47,7 @@ public class BankAccount {
         return withdraw(amount, true);
     }
     
-    public BankAccount withdraw(double amount, boolean log) {
+    private BankAccount withdraw(double amount, boolean log) {
         if (amount<=0) return null;
         if (balance.doubleValue()<amount) return null;
         BigDecimal d = new BigDecimal(amount);
