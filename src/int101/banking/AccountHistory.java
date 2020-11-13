@@ -17,19 +17,15 @@ public class AccountHistory {
     }
 
     @Override
-    public String toString() {
+    public String toString() { return this.toString("\n"); }
+    
+    public String toString(String separator) {
         StringBuilder sb = new StringBuilder();
+        if (separator==null) separator = "";
         for (int i = 0; i < count; i++) {
-            sb.append(history[i].toString()).append("\n");
+            sb.append(history[i].toString());
+            if (i<count-1) sb.append(separator);
         }
         return sb.toString();
-    }
-    
-    public String simpleToString() {
-        String result = "";
-        for (int i = 0; i < count; i++) {
-            result += history[i].toString() + "\n";
-        }
-        return result;
     }
 }
