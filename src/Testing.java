@@ -76,16 +76,16 @@ public class Testing {
         System.out.println("Add a new customer: Jim Carrey : " +
                 (c1 < 0 ? "Fail." : b.customerToString(c1)));
         int cid = b.getCustomerId(c1);
-        int idx = b.findCustomer(cid);
+        int idx = b.findCustomerById(cid);
         System.out.println("Find Customer id = " + cid + " : " +
                 (idx < 0 ? "Fail." : b.customerToString(idx)));
-        idx = b.findCustomer("Alan", "Turing");
+        idx = b.findCustomerByName("Alan", "Turing");
         System.out.println("Find Customer Name = Alan Turing : " +
                 (idx < 0 ? "Fail." : b.customerToString(idx)));
         b.changeCustomerLastname(idx, "Kay");
         System.out.println("Change Customer Name from Alan Turing to: " +
                 (idx < 0 ? "Fail." : b.customerToString(idx)));
-        idx = b.findCustomer("Jim", "Carrey");
+        idx = b.findCustomerByName("Jim", "Carrey");
         if (idx<0) { 
             System.out.println("Fail");
         } else {
@@ -95,26 +95,26 @@ public class Testing {
                 (idx < 0 ? "Fail." : b.customerToString(idx)));
         }
         
-        int a0 = b.newAccount(c0);
-        int a1 = b.newAccount(c1);
-        int a2 = b.newAccount(c1);
-        int a3 = b.newAccount(c0);        
+        int a0 = b.newAccount(c0, null);
+        int a1 = b.newAccount(c1, null);
+        int a2 = b.newAccount(c1, null);
+        int a3 = b.newAccount(c0, null);
         System.out.println("Get Account No: " + 
                 (a0<0 ? "Fail" : b.getAccountNo(a0)));
         b.deposit(a0, 4000).deposit(a0, 1500).withdraw(a0, 3050);
         System.out.println("+4000+1500-3050 = " + b.getBalance(a0));
         System.out.println("Account :: " + b.accountToString(a0));
-        System.out.println("Acount History :: \n" + b.accountHistoryToString(a0,"\n"));
+        System.out.println("Account History :: \n   " + b.accountHistoryToString(a0,"\n   "));
         System.out.println("Find Account: " + b.accountToString(b.findAccount(b.getAccountNo(a3))));
         System.out.println("Transfer Money 1275 :: " + 
                 (b.transferTo(a0, a2, 1115)==null ? "fail" : "success"));
         System.out.println("Accounts owned by " + b.customerToString(c0));
         for (idx = b.getAccountOwnedBy(c0); idx > -1; idx = b.getNextAccountOwnedBy(c0, idx)) {
-            System.out.println("account: " + b.accountToString(idx));
+            System.out.println("   account: " + b.accountToString(idx));
         }
         System.out.println("Accounts owned by " + b.customerToString(c1));
         for (idx = b.getAccountOwnedBy(c1); idx > -1; idx = b.getNextAccountOwnedBy(c1, idx)) {
-            System.out.println("account: " + b.accountToString(idx));
+            System.out.println("   account: " + b.accountToString(idx));
         }
         System.out.println("Number of Customers: " + b.getCustomerCount());
         System.out.println("Number of Accounts: " + b.getAccountCount());

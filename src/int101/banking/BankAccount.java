@@ -4,28 +4,76 @@ import int101.base.Person;
 import java.math.BigDecimal;
 
 public class BankAccount {
-    private static int nextAccountNo;
+    
+    /**
+     * a running number for "Account No" 
+     */
+    private static int nextAccountNo = 1001;
+    
+    /**
+     * the unique Account No of this account
+     */
     private final int accountNo;
+    
+    /**
+     * the name of this account
+     */
     private final String accountName;
+    
+    /**
+     * the owner of this account
+     */
     private final Person accountOwner;
+    
+    /**
+     * transaction history for this account
+     */
     private final AccountHistory history;
+    
+    /**
+     * the current balance of this account
+     */
     private BigDecimal balance;
 
-    public BankAccount(Person accountOwner, String accountName) {
+    /**
+     * Constructor
+     * if accountName is null, use Firstname and Lastname of owner instead.
+     * 
+     * @param accountOwner
+     * @param accountName 
+     */
+    public BankAccount(Person accountOwner, String accountName, int maxTransactions) {
         this.accountNo = nextAccountNo++;
         this.accountName = accountName != null ? accountName : 
                 accountOwner.getFirstname() + " " + accountOwner.getLastname();
         this.accountOwner = accountOwner;
-        this.history = new AccountHistory(10);
+        this.history = new AccountHistory(maxTransactions>0 ? maxTransactions : 100);
         this.balance = new BigDecimal(0);
         this.history.append(new AccountTransaction(TransactionType.OPEN, this.balance));
     }
     
-    public BankAccount(Person accountOwner) { this(accountOwner, null); }
+    public BankAccount(Person accountOwner, String accountName) {
+        this(accountOwner, accountName, 0);
+    }
+    
+    public BankAccount(Person accountOwner) {
+        this(accountOwner, null, 0);
+    }
+    
     public int getAccountNo() { return accountNo; }
     public double getBalance() { return balance.doubleValue(); }
     public Person getAccountOwner() { return accountOwner; }
-    public BankAccount deposit(double amount) { return deposit(amount, true); }    
+    
+    /**
+     * @param amount must be positive
+     * @return null if fail
+     */
+    public BankAccount deposit(double amount) { return deposit(amount, true); }
+    
+    /**
+     * @param amount must be positive
+     * @return null if fail
+     */
     public BankAccount withdraw(double amount) { return withdraw(amount, true); }
     
     private BankAccount deposit(double amount, boolean log) {
@@ -44,13 +92,12 @@ public class BankAccount {
         if (log) this.history.append(new AccountTransaction(TransactionType.WITHDRAW, d));
         return this;
     }
-    
-    /* ToDo:
-       - check if to Account is not null first.
-       - try withdraw from this account first (call withdraw()); if fails, return null.
-       - deposit to the other account (call deposit()); if fails, return null.
-       - if everything is ok, return this (for method chaining).
-    */
+
+    /**
+     * @param to the account to transfer to
+     * @param amount must be positive
+     * @return null if fail
+     */
     public BankAccount transferTo(BankAccount to, double amount) {
         if (to==null) return null;
         if (withdraw(amount, false)==null) return null;
@@ -63,10 +110,28 @@ public class BankAccount {
 
     @Override
     public String toString() {
-        return "BankAccount[" + accountNo + ":" + accountName + "=" + balance + ']';
+        return "BankAccount[ AccountNo : " + accountNo 
+                + " : Account Name : " + accountName 
+                + " : Balance : " + balance + " ]";
     }
-    
+
+    /**
+     * @param i the position of the transaction of this account to read
+     * @return transaction i of this account
+     */
+    public AccountTransaction getTransactionAt(int i) {
+        return history.getTransactionAt(i);
+    }
+
+    /**
+     * @return the number of transactions in this account
+     */
+    public int getHistoryCount() { return history.getCount(); }
+
+    public boolean areTransactionsFull() { return history.isFull(); }
+
     public String historyToString(String separator) {
         return history.toString(separator);
     }
+
 }

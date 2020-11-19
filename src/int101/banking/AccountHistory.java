@@ -3,6 +3,8 @@ package int101.banking;
 public class AccountHistory {
     private final AccountTransaction history[];
     private int count;
+    
+    public AccountHistory() { this(0); }
 
     public AccountHistory(int size) {
         history = new AccountTransaction[size>0 ? size :100];
@@ -16,15 +18,15 @@ public class AccountHistory {
         return null;
     }
 
-    @Override
-    public String toString() { return this.toString("\n"); }
-    
-    public String toString(String separator) {
+    public AccountTransaction getTransactionAt(int i) { return history[i]; }
+    public int getCount() { return count; }
+    public boolean isFull() { return count==history.length; }
+
+    String toString(String separator) {
         StringBuilder sb = new StringBuilder();
-        if (separator==null) separator = "";
         for (int i = 0; i < count; i++) {
-            sb.append(history[i].toString());
-            if (i<count-1) sb.append(separator);
+            sb.append(history[i]);
+            if (i+1<count) sb.append(separator);
         }
         return sb.toString();
     }

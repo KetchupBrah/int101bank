@@ -1,7 +1,7 @@
 package int101.base;
 
 public class Person {
-    private static int nextId;
+    private static int nextId = 101;
     private final int id;
     private String firstname;
     private String lastname;
@@ -31,7 +31,7 @@ public class Person {
 
     @Override
     public String toString() {
-        return "Person[" + id + ":" + firstname + "-" + lastname + ']';
+        return "[ID: " + id + " : FIRSTNAME: " + firstname + " LASTNAME: " + lastname + " ]";
     }
     
 }
